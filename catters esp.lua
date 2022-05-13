@@ -1,30 +1,13 @@
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 local ESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kiriot22/ESP-Lib/main/ESP.lua"))()
 
-local Window = OrionLib:MakeWindow({Name = "phantom force esp", HidePremium = false, SaveConfig = false, ConfigFolder = "OrionTest"})
+local Window = OrionLib:MakeWindow({Name = "phantom force esp", HidePremium = false, SaveConfig = true, ConfigFolder = "shitty pf esp"})
 
 local Tab = Window:MakeTab({
     Name = "ESP",
     Icon = "",
     PremiumOnly = false
 })
-
-Tab:AddToggle({
-    Name = "Toggle Blue ESP",
-    Default = false,
-    Callback = function(Value)
-    ESP.BlueToggle = Value
-    end    
-})
-
-Tab:AddToggle({
-    Name = "Toggle Orange ESP",
-    Default = false,
-    Callback = function(Value)
-    ESP.OrangeToggle = Value
-    end    
-})
-
 Tab:AddToggle({
     Name = "Toggle Names",
     Default = false,
@@ -54,6 +37,26 @@ Tab:AddBind({
     end    
 })
 
+local plr = game:GetService("Players").LocalPlayer
+
+if plr.Team.Name == "Ghosts" then
+        ESP.BlueToggle = true
+        ESP.OrangeToggle = false
+    else
+        ESP.BlueToggle = false
+        ESP.OrangeToggle = true
+end
+
+plr:GetPropertyChangedSignal("Team"):Connect(function()
+    if plr.Team.Name == "Ghosts" then
+        ESP.BlueToggle = true
+        ESP.OrangeToggle = false
+    else
+        ESP.BlueToggle = false
+        ESP.OrangeToggle = true
+end
+end)
+
 ESP:AddObjectListener(workspace.Players["Bright blue"], {
     CustomName = "Player",
     Name = "Player",
@@ -67,3 +70,7 @@ ESP:AddObjectListener(workspace.Players["Bright orange"], {
     Color = Color3.fromRGB(255, 125, 0),
     IsEnabled = "OrangeToggle"
 })
+
+
+ESP:Toggle(true)
+OrionLib:Init()
